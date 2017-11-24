@@ -98,43 +98,43 @@
         return false;
     }
 
-    function front(){
-        this.pos=0;
+    function front() {
+        this.pos = 0;
     }
 
-    function end(){
-        this.pos=this.listSize-1;
+    function end() {
+        this.pos = this.listSize - 1;
     }
 
-    function prev(){
-        if(this.pos >0){
+    function prev() {
+        if (this.pos > 0) {
             --this.pos;
         }
     }
 
-    function next(){
-        if(this.pos <this.listSize-1){
+    function next() {
+        if (this.pos < this.listSize - 1) {
             ++this.pos;
-        }else{
-           this.pos=this.listSzie;
+        } else {
+            this.pos = this.listSzie;
         }
     }
 
-    function currPos(){
+    function currPos() {
         return this.pos;
     }
 
-    function moveTo(position){
-        this.pos=position;
+    function moveTo(position) {
+        this.pos = position;
     }
 
     //获取当前位置元素
-    function getElement(){
+    function getElement() {
         return this.dataStore[this.pos];
     }
 
 
-    //使用列表
+    //使用列表示例
     var names = new List();
     names.append("Cynthia");
     names.append("Raymond");
@@ -142,19 +142,60 @@
     document.write(names.toString());
     document.write("<br/>");
     names.remove("Raymond");
-    names.insert('HAHA','Cynthia');
+    names.insert('HAHA', 'Cynthia');
     document.write(names.toString());
 
     names.moveTo(2);
-    document.write( names.getElement());
-    names.insert("end element",'Barbara');
-    for(names.front();names.currPos()<names.length();names.next()){
+    document.write(names.getElement());
+    names.insert("end element", 'Barbara');
+    for (names.front(); names.currPos() < names.length(); names.next()) {
         document.write(names.getElement());
     }
 
 
+    //如：基于列表的应用:影碟租赁
+
+    function Customer(name,movie){
+        this.name=name;
+        this.movie=movie;
+    }
+
+    function displayList(list) {
+        for (list.front(); list.currPos() < list.length(); list.next()) {
+            if (list.getElement() instanceof Customer) {
+                document.write(list.getElement()["name"] + "借了 " +
+                        list.getElement()["movie"]);
+            }
+            else {
+                document.write(list.getElement());
+            }
+        }
+    }
+
+    var movies = ["A movie", "B movie", "C movie", "D movie", "E movie", "F movie"];
+
+    var movieList = new List();
+    for (var i = 0; i < movies.length; ++i) {
+        movieList.append(movies[i]);
+    }
 
 
+    //那个用户租赁了那个影碟
+    function checkOut(name,movie,movieList,customerList){
+        if(movieList.contains(movie)){
+            var c=new Customer(name,movie);
+            customerList.append(c);
+            movieList.remove(movie);
+        }else{
+            document.write('没有该电影');
+        }
+    }
+
+    var customerList =new List();
+    checkOut('zhang san','A movie',movieList,customerList);
+
+    displayList(movieList);
+    displayList(customerList);
 
 
 </script>
