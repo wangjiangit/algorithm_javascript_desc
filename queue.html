@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>数据结构-队列</title>
+</head>
+<body>
+<script type="text/javascript">
+    /**
+     队列是一种列表，不同的是队列只能在队尾插入元素，在队首删除元素。队列用于存储按
+     顺序排列的数据，先进先出，这点和栈不一样，在栈中，最后入栈的元素反而被优先处
+     理。可以将队列想象成在银行前排队的人群，排在最前面的人第一个办理业务，新来的人
+     只能在后面排队，直到轮到他们为止。
+     队列是一种先进先出（First-In-First-Out，FIFO）的数据结构。队列被用在很多地方，比如
+     提交操作系统执行的一系列进程、打印任务池等，一些仿真系统用队列来模拟银行或杂货
+     店里排队的顾客。
+     ===============================================================================
+     队列的两种主要操作是：向队列中插入新元素和删除队列中的元素。插入操作也叫做入
+     队，删除操作也叫做出队
+     */
+
+    function Queue() {
+        this.dataStore = [];
+        this.enqueue = enqueue;
+        this.dequeue = dequeue;
+        this.front = front;
+        this.back = back;
+        this.toString = toString;
+        this.empty = empty;
+        this.count = count;
+
+    }
+
+    //入队
+    function enqueue(element) {
+        this.dataStore.push(element);
+    }
+
+    //出队
+
+    function dequeue() {
+        return this.dataStore.shift()
+    }
+
+    //获取队列头个元素
+    function front() {
+        return this.dataStore[0];
+    }
+
+    //获取队列尾部第一个元素
+    function back() {
+        return this.dataStore[this.dataStore.length - 1];
+    }
+
+    //展示队列所有元素
+    function toString() {
+        var retStr = '';
+        for (var i = 0; i < this.dataStore.length; i++) {
+            retStr += this.dataStore[i] + "<br/>";
+        }
+        return retStr;
+    }
+
+    //判断队列是否为空
+    function empty() {
+        if (this.dataStore.length == 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    function count() {
+        return this.dataStore.length;
+    }
+
+
+    //使用示例1
+    var q = new Queue();
+    q.enqueue("Meredith");
+    q.enqueue("Cynthia");
+    q.enqueue("Jennifer");
+    document.write(q.toString());
+    q.dequeue();
+    document.write(q.toString());
+
+    //=========================================应用案例1(方块舞的舞伴分配问题)=======================================================
+    /**
+     前面我们提到过，经常用队列模拟排队的人。下面我们使用队列来模拟跳方块舞的人。当
+     男男女女来到舞池，他们按照自己的性别排成两队。当舞池中有地方空出来时，选两个队
+     列中的第一个人组成舞伴。他们身后的人各自向前移动一位，变成新的队首。当一对舞伴
+     迈入舞池时，主持人会大声喊出他们的名字。当一对舞伴走出舞池，且两排队伍中有任意
+     一队没人时，主持人也会把这个情况告诉大家。
+     ==============================================================================
+     跳方块舞的男男女女的姓名储存在字符串（性别+姓名）:如
+     F  Allison McMillan
+     M  Frank Opitz
+     M  Mason McMillan
+     M  Clayton Ruff
+     F  Cheryl Ferenback
+     M  Raymond Williams
+     F  Jennifer Ingram
+     M  Bryan Frazer
+     M  David Durr
+     M  Danny Martin
+     F  Aurora Adney
+     */
+
+
+    //跳舞的人
+    var dancersStr = "F  Allison McMillan\nM  Frank Opitz\nM  Mason McMillan\nM  Clayton Ruff\nF  Cheryl Ferenback\nM  Raymond Williams\nF  Jennifer Ingram\nM  Bryan Frazer\nM  David Durr\nM  Danny Martin\nF  Aurora Adney";
+
+    //每个舞者信息都被存储在一个Dancer 对象中：
+    function Dancer(name, sex) {
+        this.name = name;
+        this.sex = sex;
+    }
+
+
+    function getDancers(males, females) {
+        var names = dancersStr.split("\n");
+        for (var i = 0; i < names.length; ++i) {
+            names[i] = names[i].trim();
+        }
+        for (var i = 0; i < names.length; ++i) {
+            var dancer = names[i].split("  ");
+            var sex = dancer[0];
+            var name = dancer[1];
+            if (sex == "F") {
+                females.enqueue(new Dancer(name, sex));
+            }
+            else {
+                males.enqueue(new Dancer(name, sex));
+            }
+        }
+    }
+
+
+    function dance(males, females) {
+        document.write("The dance partners are: \n");
+        while (!females.empty() && !males.empty()) {
+            var person = females.dequeue();
+            document.write("Female dancer is: " + person.name);
+            var person = males.dequeue();
+            document.write(" and the male dancer is: " + person.name + "<br/>");
+        }
+
+    }
+
+
+    var maleDancers = new Queue();
+    var femaleDancers = new Queue();
+    getDancers(maleDancers, femaleDancers);
+    dance(maleDancers, femaleDancers);
+
+
+    if (!femaleDancers.empty()) {
+        document.write('There are ' + femaleDancers.count() + " female dancers waiting to dance.");
+        +femaleDancers.front().name + " is waiting to dance."
+
+    }
+
+
+    if (!maleDancers.empty()) {
+        document.write('There are ' + maleDancers.count() +
+                " male dancers waiting to dance." + maleDancers.front().name + " is waiting to dance.");
+    }
+
+    //=========================================应用案例2(使用队列对数据进行排序)=======================================================
+
+
+
+
+
+</script>
+</body>
+</html>
