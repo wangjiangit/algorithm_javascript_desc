@@ -43,12 +43,13 @@
          Node类用来表示节点，LinkedList类提供了插入节点，删除节点，显示节点的方法和一些辅助方法
          */
 
+        //节点元素类
         function Node(element){
             this.element=element;
             this.next=null;
         }
 
-
+        //链表类
         function LList(){
             this.head=new Node("head");
             this.find=find;
@@ -58,6 +59,7 @@
             this.display=display;
         }
 
+        //查找指定节点并返回该节点
         function find(item){
             var currNode=this.head;
             while(currNode.element!=item){
@@ -66,6 +68,7 @@
             return currNode;
         }
 
+        //在指定节点后面插入新节点
         function insert(newElement,item){
 
             var newNode=new Node(newElement);
@@ -74,7 +77,7 @@
             current.next=newNode;
         }
 
-
+        //查找指定节点的上个节点
         function findPrevious(item){
             var currNode=this.head;
             while(!(currNode.next==null) && (currNode.next.element!=item)){
@@ -83,6 +86,7 @@
             return currNode;
         }
 
+        //删除指定节点
         function remove(item){
             var prevNode=this.findPrevious(item);
             if(!(prevNode.next ==null)){
@@ -90,6 +94,7 @@
             }
         }
 
+        //展示链表所有元素
         function display(){
             var currNode=this.head;
             while(!(currNode.next==null)){
