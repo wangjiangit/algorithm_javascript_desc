@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>字典</title>
+</head>
+<body>
+<script type="text/javascript">
+    /**
+     * 字典是一种以键- 值对形式存储数据的数据结构，就像电话号码簿里的名字和电话号码一
+     样。要找一个电话时，先找名字，名字找到了，紧挨着它的电话号码也就找到了。这里的
+     键是指你用来查找的东西，值是查找得到的结果。
+     */
+
+    function Dictionary() {
+        this.add = add;
+        this.datastore = new Array();
+        this.find = find;
+        this.remove = remove;
+        this.count = count;
+        this.clear=clear;
+        this.showAll = showAll;
+    }
+
+    //添加
+    function add(key, value) {
+        this.datastore[key] = value;
+    }
+    //查找
+    function find(key) {
+        return this.datastore[key];
+    }
+    //删除
+    function remove(key) {
+        delete this.datastore[key];
+    }
+    //计数
+    function count() {
+        var n = 0;
+        for (var key in Object.keys(this.datastore)) {
+            ++n;
+        }
+        return n;
+    }
+
+    //清空
+    function clear()
+    {
+        var keysArr = Object.keys(this.datastore);
+        var dictionaryInstance = this;
+        keysArr.forEach(function (val) {
+         delete dictionaryInstance.datastore[val];
+        });
+    }
+    //展示
+    function showAll() {
+        var keysArr = Object.keys(this.datastore).sort();
+        //var keysArr = Object.keys(this.datastore); 如果不想让数组按键排序
+        var dictionaryInstance = this;
+        keysArr.forEach(function (val) {
+            document.write(val + '->' + dictionaryInstance.datastore[val] + '<br/>');
+        });
+    }
+
+    var pbook = new Dictionary();
+    pbook.add("Mike", "123");
+    pbook.add("David", "345");
+    pbook.add("Cynthia", "456");
+    pbook.remove("David");
+    pbook.showAll();
+    document.write(pbook.count());
+    pbook.clear();
+    document.write(pbook.count());
+
+
+
+</script>
+</body>
+</html>
