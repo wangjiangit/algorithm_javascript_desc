@@ -14,6 +14,46 @@
         //this.get = get;
     }
 
+    /**
+     * ASCII 码值的和除以数组长度得到余数
+     */
+     function simpleHash(data) {
+        var total = 0;
+        for (var i = 0; i < data.length; ++i) {
+            total += data.charCodeAt(data[i]);
+        }
+        return total % this.table.length;
+    }
+
+     /**
+     * 存入散列表
+     * @param data
+     */
+    function put(data) {
+        var pos = this.simpleHash(data);
+        this.table[pos] = data;
+    }
+
+    /**
+     * 展示散列表数据
+     */
+    function showDistro() {
+        var n = 0;
+        for (var i = 0; i < this.table.length; ++i) {
+            if (this.table[i] != undefined) {
+                document.write('位置' + i + ": " + this.table[i]+'<br/>');
+            }
+        }
+    }
+
+    var someNames = ["David", "Jennifer", "Donnie", "Raymond",
+        "Cynthia", "Mike", "Clayton", "Danny", "Jonathan", "中国", "美国"];
+    var hTable = new HashTable();
+    for (var i = 0; i < someNames.length; ++i) {
+        hTable.put(someNames[i]);
+    }
+    hTable.showDistro();
+
 
 </script>
 </body>
