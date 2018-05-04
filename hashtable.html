@@ -9,12 +9,14 @@
     function HashTable() {
         this.table = new Array(137);
         this.simpleHash = simpleHash;
+        this.betterHash = betterHash;
         this.showDistro = showDistro;
         this.put = put;
         //this.get = get;
     }
 
     /**
+     * [简单版本散列]
      * ASCII 码值的和除以数组长度得到余数
      */
      function simpleHash(data) {
@@ -22,7 +24,35 @@
         for (var i = 0; i < data.length; ++i) {
             total += data.charCodeAt(data[i]);
         }
+        document.write("Hash value: " + data + " -> " + total+"<br/>");
         return total % this.table.length;
+    }
+
+    /**
+     *[较好版本散列]
+     为了避免碰撞，首先要确保散列表中用来存储数据的数组其大小是个质数。这一点很关
+     键，这和计算散列值时使用的取余运算有关。数组的长度应该在 100 以上，这是为了让数
+     据在散列表中分布得更加均匀。通过试验我们发现，比 100 大且不会让例 8-1 中的数据产
+     生碰撞的第一个质数是 137。使用其他更接近 100 的质数，在该数据集上依然会产生碰撞。
+     霍纳算法很好地解决了这个问题，本书不会过多深入该算法的数学细节，在此算法中，新
+     的散列函数仍然先计算字符串中各字符的 ASCII 码值，不过求和时每次要乘以一个质数。
+     大多数算法书建议使用一个较小的质数，比如 31，但是对于我们的数据集，31 不起作用，
+     我们使用 37，这样刚好不会产生碰撞。
+     */
+    function betterHash(data){
+        const H=37;
+        var total=0;
+        for(var i=0;i<data.length;++i){
+            total+= H*total +data.charCodeAt(i);
+        }
+
+        total= total % this.table.length;
+        document.write("Hash value: " + data + " -> " + total+"<br/>");
+        if(total <0){
+            total +=this.table.length -1;
+        }
+
+        return parseInt(total);
     }
 
      /**
@@ -30,7 +60,7 @@
      * @param data
      */
     function put(data) {
-        var pos = this.simpleHash(data);
+        var pos = this.betterHash(data);
         this.table[pos] = data;
     }
 
@@ -47,7 +77,7 @@
     }
 
     var someNames = ["David", "Jennifer", "Donnie", "Raymond",
-        "Cynthia", "Mike", "Clayton", "Danny", "Jonathan", "中国", "美国"];
+        "Cynthia", "Mike", "Clayton", "Danny", "Jonathan"];
     var hTable = new HashTable();
     for (var i = 0; i < someNames.length; ++i) {
         hTable.put(someNames[i]);
