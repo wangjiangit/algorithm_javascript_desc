@@ -13,6 +13,7 @@
         this.showDistro = showDistro;
         this.put = put;
         this.get = get;
+        this.buildChain=buildChain;
     }
 
     /**
@@ -64,10 +65,17 @@
     }
 
     /**
-     *
+     *散列表获取数据
      */
     function get(key) {
         return this.table[this.betterHash(key)]
+    }
+
+    function buildChain()
+    {
+        for(var i=0;i<this.table.length;i++){
+            this.table[i]=new Array();
+        }
     }
 
     /**
@@ -92,8 +100,8 @@
         }];
     var hTable = new HashTable();
 
-    someNames.forEach(function(e){
-        hTable.put(e.key,e.value);
+    someNames.forEach(function (e) {
+        hTable.put(e.key, e.value);
     })
 
     hTable.showDistro(); //展示所有
